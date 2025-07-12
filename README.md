@@ -136,7 +136,7 @@ GET /public-images/filename.ext
 
 ---
 
-### 🚦 如何用 Cloudflare Zero Trust 保护 Access Token
+### 🚦 如何用 Cloudflare Zero Trust（50 个免费 token 一般够用了） 保护 Access Token
 
 **强烈建议：结合 Zero Trust 访问策略，确保只有你和你授权的人能上传/管理文件，图片展示对所有人开放。**
 

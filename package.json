@@ -1,0 +1,25 @@
+{
+  "name": "cloudflare-file-share",
+  "version": "1.0.0",
+  "description": "Cloudflare File Share - 基于 Cloudflare Pages + Functions + R2 的文件分享服务",
+  "main": "functions/upload.js",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2024-01-01",
+    "deploy": "wrangler pages deploy public --project-name=cloudflare-file-share",
+    "build": "echo 'No build step required'",
+    "preview": "wrangler pages dev public"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "functions",
+    "r2",
+    "file-upload",
+    "file-sharing"
+  ],
+  "author": "Benjamin Gao",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+} 

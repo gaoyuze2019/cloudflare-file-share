@@ -1,0 +1,19 @@
+name = "your-project-name"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "public"
+
+[env.production.vars]
+UPLOAD_TOKEN = "your-secure-upload-token"
+PUBLIC_URL = "https://your-domain.pages.dev"
+
+[[env.production.r2_buckets]]
+binding = "MY_BUCKET"
+bucket_name = "your-r2-bucket-name"
+
+[env.development.vars]
+UPLOAD_TOKEN = "your-secure-upload-token"
+PUBLIC_URL = "http://localhost:8788"
+
+[[env.development.r2_buckets]]
+binding = "MY_BUCKET"
+bucket_name = "your-r2-bucket-name" 

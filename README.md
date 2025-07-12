@@ -1,233 +1,135 @@
 # 🚀 Cloudflare File Share
 
-基于 Cloudflare Pages + Functions + R2 的高性能文件上传与分享服务。
+> **专为 Markdown 图片/截图托管而生，10GB 免费、长期、稳定、可控！**
 
-## ✨ 特性
+## 🏆 项目定位
 
-- 🎯 **拖拽上传** - 支持拖拽文件或点击选择
-- 📱 **响应式设计** - 完美适配手机和桌面
-- 🔄 **批量上传** - 同时上传多个文件
-- 📊 **文件管理** - 查看、删除文件，显示存储使用情况
-- 🛡️ **安全可靠** - Token 认证，防止滥用
-- ⚡ **极速访问** - 全球 CDN 加速
-- 💾 **大文件支持** - 最大支持 100MB 文件
-- 🎨 **现代界面** - 简洁美观的用户界面
-- 📋 **Copy MD 格式** - 一键复制 Markdown 引用格式（核心功能）
+本项目旨在解决：**你在写 Markdown 文档时，图片（如截图、插图）无法同步给他人**的问题。
 
-## 🛠️ 支持的文件类型
+- 你可以将图片批量上传到自己的 Cloudflare R2，生成 Markdown 链接，插入文档。
+- 10GB 免费额度，几乎永久、全免费、无广告、无第三方依赖。
+- 你可以将 Access Token 分享给团队成员，大家共用同一图床。
+- **所有上传操作都需要 Access Token，防止被滥用。**
 
-- 📸 **图片**: PNG, JPG, GIF, WebP, SVG, BMP, TIFF
-- 📄 **文档**: PDF, TXT, JSON
+> 适合：技术文档、团队协作、知识库、博客、个人笔记等场景。
+
+---
+
+## ✨ 主要特性
+
+- 🖼️ 拖拽/批量上传图片、文档
+- 📋 一键复制 Markdown 格式链接（核心功能）
+- 📱 响应式设计，移动端友好
+- 🛡️ Access Token 认证，安全可控
+- 🗑️ 文件管理（列表、删除、用量统计）
+- ⚡ 全球 CDN 加速，R2 存储
+- 💾 支持最大 100MB 单文件
+
+---
+
+## ⚠️ 安全与访问说明
+
+- **所有上传/删除操作都需要 Access Token**，默认禁止公开上传，防止被他人滥用。
+- 你可以将 Token 分享给可信用户，实现团队共用。
+- **在线访问地址**（如 https://g103200-file-share.pages.dev ）仅用于文件访问/预览，**不建议公开宣传为“公共图床”**。
+- 如需开放上传，请自行更改 Token 策略并承担风险。
+
+---
 
 ## 🚀 快速开始
 
 ### 1. 克隆项目
-
 ```bash
 git clone https://github.com/gaoyuze2019/cloudflare-file-share.git
 cd cloudflare-file-share
 ```
 
 ### 2. 安装依赖
-
 ```bash
 npm install
 ```
 
 ### 3. 配置 Cloudflare
+- 创建 R2 存储桶（如 my-image-bucket）
+- 创建 Pages 项目，连接 GitHub
+- 复制 `wrangler.toml.example` 为 `wrangler.local.toml`，填写你的真实配置
 
-#### 创建 R2 存储桶
-1. 登录 Cloudflare Dashboard
-2. 进入 R2 Object Storage
-3. 创建一个新的存储桶（例如：`my-file-bucket`）
+### 4. 设置 Access Token（强烈建议！）
+- 在 Cloudflare Pages 项目设置 > Functions > 环境变量，添加：
+  - `UPLOAD_TOKEN`：自定义强密码（如 `Gbenjamin3#,...`）
+- 在本地 `wrangler.local.toml` 也要同步配置
+- 你可以将 Token 分享给团队成员
 
-#### 创建 Pages 项目
-1. 进入 Cloudflare Pages
-2. 创建一个新项目
-3. 连接到你的 GitHub 仓库
-
-#### 配置文件
-复制 `wrangler.toml.example` 到 `wrangler.local.toml` 并填入你的配置：
-
-```bash
-cp wrangler.toml.example wrangler.local.toml
-```
-
-编辑 `wrangler.local.toml` 文件，填入：
-- `name`: 你的项目名称
-- `UPLOAD_TOKEN`: 你的上传令牌（建议使用强密码）
-- `PUBLIC_URL`: 你的域名
-- `bucket_name`: 你的 R2 存储桶名称
-
-> **注意**: `wrangler.local.toml` 文件已被添加到 `.gitignore`，不会被提交到 Git 仓库，保护你的敏感信息。
-
-### 4. 部署
-
-```bash
-# 部署到 Cloudflare Pages
-./deploy-pages.sh
-
-# 或者使用 npm 命令
-npm run deploy
-```
-
-### 5. 配置环境变量
-
-在 Cloudflare Dashboard 的 Pages 设置中配置：
-
-**Functions 设置 > 环境变量**：
-- `UPLOAD_TOKEN`: 你的上传令牌
-
-**Functions 设置 > R2 存储桶绑定**：
+### 5. 绑定 R2 存储桶
 - 变量名：`MY_BUCKET`
-- R2 存储桶：你的存储桶名称
+- 存储桶名：你的 R2 名称
+
+### 6. 启动/部署
+```bash
+npm run dev   # 本地开发
+npm run deploy  # 部署到 Cloudflare Pages
+```
+
+---
 
 ## 📋 API 文档
 
-### 上传文件
-
+### 上传文件（需 Token）
 ```bash
 POST /upload
 Headers:
-  X-Auth-Token: your-upload-token
+  X-Auth-Token: <your-upload-token>
   Content-Type: file-mime-type
-  Content-Length: file-size
 Body: file-binary-data
 ```
 
-**响应:**
-```json
-{
-  "success": true,
-  "url": "https://g103200-file-share.pages.dev/public-images/filename.ext",
-  "filename": "2024-01-01T12-00-00-000Z-uuid.ext",
-  "size": 1024,
-  "type": "image/png",
-  "uploadedAt": "2024-01-01T12:00:00.000Z",
-  "markdown": "![filename.ext](https://g103200-file-share.pages.dev/public-images/filename.ext)"
-}
-```
-
 ### 获取文件列表
-
 ```bash
 GET /list
 ```
 
-**响应:**
-```json
-{
-  "success": true,
-  "files": [
-    {
-      "filename": "example.png",
-      "size": 1024,
-      "uploadedAt": "2024-01-01T12:00:00.000Z",
-      "url": "https://g103200-file-share.pages.dev/public-images/example.png",
-      "type": "image/png",
-      "markdown": "![example.png](https://g103200-file-share.pages.dev/public-images/example.png)"
-    }
-  ],
-  "total": 1,
-  "totalSize": 1024
-}
-```
-
-### 删除文件
-
+### 删除文件（需 Token）
 ```bash
 POST /delete
 Headers:
-  X-Auth-Token: your-upload-token
+  X-Auth-Token: <your-upload-token>
   Content-Type: application/json
 Body: {"filename": "filename.ext"}
 ```
 
-**响应:**
-```json
-{
-  "success": true,
-  "message": "Deleted: filename.ext",
-  "deletedAt": "2024-01-01T12:00:00.000Z"
-}
-```
-
-### 访问文件
-
+### 访问文件（公开）
 ```bash
 GET /public-images/filename.ext
 ```
 
-直接返回文件内容，支持缓存和 CDN 加速。
+---
 
-## 🔧 项目结构
+## 🎯 典型用法：Markdown 图床
 
-```
-g103200-file-share/
-├── functions/              # Cloudflare Pages Functions
-│   ├── upload.js          # 文件上传处理
-│   ├── list.js            # 文件列表获取
-│   ├── delete.js          # 文件删除处理
-│   └── public-images/     # 文件访问路由
-│       └── [[file]].js    # 动态路由处理文件访问
-├── public/                # 静态文件目录
-│   └── index.html         # 主页面
-├── wrangler.toml          # Cloudflare 配置
-├── package.json           # 项目配置
-└── deploy-pages.sh        # 部署脚本
-```
+1. 上传图片，点击 **Copy MD**，自动复制 Markdown 格式：
+   ```markdown
+   ![xxx.png](https://g103200-file-share.pages.dev/public-images/xxx.png)
+   ```
+2. 粘贴到你的 Markdown 文档，团队成员/他人只需同步文档即可看到图片。
+3. 10GB 免费额度，适合长期存储文档图片。
 
-## 🎯 核心功能：Copy MD 格式
-
-这是本项目的核心功能之一！每个上传的文件都会自动生成 Markdown 引用格式：
-
-```markdown
-![filename.ext](https://g103200-file-share.pages.dev/public-images/filename.ext)
-```
-
-点击 **Copy MD** 按钮即可一键复制，方便在 Markdown 文档中使用。
+---
 
 ## 🛡️ 安全建议
 
-1. **保护上传令牌**: 确保 `UPLOAD_TOKEN` 的安全性
-2. **访问控制**: 可以通过 Cloudflare Access 添加额外的访问控制
-3. **定期清理**: 定期清理不需要的文件以节省存储空间
-4. **监控使用**: 监控存储使用量和请求频率
+- **务必设置强 Token，切勿公开 Token**
+- 不建议将上传入口公开宣传为“公共图床”
+- 可通过 Cloudflare Access 增加额外访问控制
+- 定期清理不需要的文件，节省空间
 
-## 📈 性能优化
-
-- ✅ 使用 Cloudflare Pages Functions 提供边缘计算
-- ✅ R2 存储提供全球低延迟访问
-- ✅ CDN 缓存加速文件访问
-- ✅ 压缩和优化的前端代码
-- ✅ 异步文件上传处理
-
-## 🔄 从 Workers 迁移到 Pages
-
-如果你之前使用的是 Cloudflare Workers 版本，现在已经迁移到 Pages + Functions 架构：
-
-1. **更好的开发体验**: 静态文件和 API 分离
-2. **更灵活的路由**: 支持动态路由和静态文件服务
-3. **更好的性能**: 边缘函数和静态文件分发
-4. **更容易维护**: 清晰的项目结构
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
+---
 
 ## 📄 许可证
 
 MIT License
 
-## 🙏 致谢
-
-- [Cloudflare Pages](https://pages.cloudflare.com/)
-- [Cloudflare Functions](https://developers.cloudflare.com/pages/functions/)
-- [Cloudflare R2](https://developers.cloudflare.com/r2/)
-- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
-
 ---
 
 ⭐ 如果这个项目对你有帮助，请给个 Star！
 
-🌐 **在线访问**: https://g103200-file-share.pages.dev
+项目主页：[https://github.com/gaoyuze2019/cloudflare-file-share](https://github.com/gaoyuze2019/cloudflare-file-share)

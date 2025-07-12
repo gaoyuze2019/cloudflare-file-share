@@ -24,8 +24,8 @@
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/your-username/g103200-file-share.git
-cd g103200-file-share
+git clone https://github.com/gaoyuze2019/cloudflare-file-share.git
+cd cloudflare-file-share
 ```
 
 ### 2. 安装依赖
@@ -230,4 +230,4 @@ MIT License
 
 ⭐ 如果这个项目对你有帮助，请给个 Star！
 
-🌐 **在线访问**: https://g103200-file-share.pages.dev 
+🌐 **在线访问**: https://g103200-file-share.pages.dev

@@ -47,17 +47,19 @@ npm install
 3. 连接到你的 GitHub 仓库
 
 #### 配置文件
-复制 `wrangler.toml.example` 到 `wrangler.toml` 并填入你的配置：
+复制 `wrangler.toml.example` 到 `wrangler.local.toml` 并填入你的配置：
 
 ```bash
-cp wrangler.toml.example wrangler.toml
+cp wrangler.toml.example wrangler.local.toml
 ```
 
-编辑 `wrangler.toml` 文件，填入：
+编辑 `wrangler.local.toml` 文件，填入：
 - `name`: 你的项目名称
 - `UPLOAD_TOKEN`: 你的上传令牌（建议使用强密码）
 - `PUBLIC_URL`: 你的域名
 - `bucket_name`: 你的 R2 存储桶名称
+
+> **注意**: `wrangler.local.toml` 文件已被添加到 `.gitignore`，不会被提交到 Git 仓库，保护你的敏感信息。
 
 ### 4. 部署
 

@@ -8,6 +8,7 @@ yarn-error.log*
 .wrangler/
 wrangler.toml.bak
 wrangler.toml
+wrangler.local.toml
 
 # Environment variables
 .env

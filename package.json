@@ -1,10 +1,10 @@
 {
-  "name": "cloudflare-file-share",
+  "name": "g103200-file-share",
   "version": "1.0.0",
   "description": "Cloudflare File Share - 基于 Cloudflare Pages + Functions + R2 的文件分享服务",
   "main": "functions/upload.js",
   "scripts": {
-    "dev": "wrangler pages dev public --compatibility-date=2024-01-01",
+    "dev": "wrangler pages dev public --compatibility-date=2024-01-01 --config wrangler.local.toml",
     "deploy": "wrangler pages deploy public --project-name=cloudflare-file-share",
     "build": "echo 'No build step required'",
     "preview": "wrangler pages dev public"

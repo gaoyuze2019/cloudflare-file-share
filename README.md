@@ -48,6 +48,16 @@ cd cloudflare-file-share
 ```bash
 npm install
 ```
+> **依赖说明**
+> 本项目依赖极少，`npm install` 主要用于安装 Cloudflare 官方开发工具 wrangler。
+> 你可以在 `package.json` 里看到：
+> ```json
+> "devDependencies": {
+>   "wrangler": "^3.0.0"
+> }
+> ```
+> wrangler 用于本地开发、模拟和部署，无需其它依赖。
+> 如果你后续需要用到更多 npm 包，也可以通过 `npm install 包名` 安装。
 
 ### 3. 配置 Cloudflare
 - 创建 R2 存储桶（如 my-image-bucket）
@@ -56,7 +66,7 @@ npm install
 
 ### 4. 设置 Access Token（强烈建议！）
 - 在 Cloudflare Pages 项目设置 > Functions > 环境变量，添加：
-  - `UPLOAD_TOKEN`：自定义强密码（如 `Gbenjamin3#,...`）
+  - `UPLOAD_TOKEN`：**自定义强密码（如 `A1b2C3d4!@#`，不要用常用密码，也不要泄露）**
 - 在本地 `wrangler.local.toml` 也要同步配置
 - 你可以将 Token 分享给团队成员
 
